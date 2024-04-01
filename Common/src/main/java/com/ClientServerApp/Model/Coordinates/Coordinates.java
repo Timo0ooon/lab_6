@@ -1,10 +1,11 @@
 package com.ClientServerApp.Model.Coordinates;
 
 import com.ClientServerApp.Model.Coordinates.Validators.YCoordinateValidator;
-import static com.ClientServerApp.MyInput.MyInput.input;
 
 import java.io.Serial;
 import java.io.Serializable;
+
+import static com.ClientServerApp.MyInput.MyInput.input;
 
 public class Coordinates implements Serializable {
     @Serial
@@ -58,7 +59,7 @@ public class Coordinates implements Serializable {
 
     @Override
     public String toString() {
-        return this.x + "\n" + this.y;
+        return "X coordinate: " + this.x + "\n" + "Y coordinate: " + this.y;
     }
 
 }

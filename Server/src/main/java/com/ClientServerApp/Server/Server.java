@@ -14,14 +14,18 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class Server {
-    private final CollectionManager collectionManager = new CollectionManager("data.csv");
+    private final CollectionManager collectionManager;
     private final Logger logger = LoggerFactory.getLogger(Server.class);
+
+    public Server(String fileName) {
+        this.collectionManager = new CollectionManager(fileName);
+    }
 
     public void run() {
         try (
-                ServerSocket serverSocket = new ServerSocket(8052)
+                ServerSocket serverSocket = new ServerSocket(0)
         ) {
-            logger.info("[Server]: port is " + serverSocket.getLocalPort());
+            this.logger.info("[Server]: port is " + serverSocket.getLocalPort());
 
             while (true) {
                 Socket userSocket = serverSocket.accept();
@@ -31,29 +35,29 @@ public class Server {
                 ) {
 
                     while (true) {
-                        logger.info("[Server]: Waiting request...");
+                        this.logger.info("[Server]: waiting request...");
                         Request request = (Request) objectInputStream.readObject();
                         String response = collectionManager.findCommand(request);
 
                         objectOutputStream.writeObject(response);
                         objectOutputStream.flush();
-                        logger.info("[Server]: Response sent!");
+                        this.logger.info("[Server]: response sent!");
                     }
                 }
                 catch (IOException e) {
-                    logger.error("[Server]: " + e.getMessage(), e);
+                    this.logger.error("[Server]: " + e.getMessage(), e);
                 }
             }
         }
 
         catch (IOException | ClassNotFoundException e) {
-            logger.error("[Server]: " + e.getMessage(), e);
+            this.logger.error("[Server]: " + e.getMessage(), e);
         }
     }
 
     public static void main(String[] args) {
         PropertyConfigurator.configure("Server\\src\\main\\resources\\log4j.properties");
-        Server server = new Server();
+        Server server = new Server("data.csv");
         server.run();
     }
 }

@@ -1,10 +1,15 @@
 package com.ClientServerApp.CollectionManager.Commands;
 
 import com.ClientServerApp.Model.HumanBeing.HumanBeing;
+import com.ClientServerApp.Server.Server;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Hashtable;
 
 public class Insert implements CommandWithTwoArguments {
+    private final Logger logger = LoggerFactory.getLogger(Server.class);
 
     @Override
     public String execute(Hashtable<Integer, HumanBeing> collection, String argument, HumanBeing user) {
@@ -19,7 +24,7 @@ public class Insert implements CommandWithTwoArguments {
             return "Person[" + argument + "]" + " added!";
         }
         catch (NumberFormatException e) {
-            System.out.println(e.getMessage());
+            this.logger.error("[Server]: " + e.getMessage());
         }
 
         return "";

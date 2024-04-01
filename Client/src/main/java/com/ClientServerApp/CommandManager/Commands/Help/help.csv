@@ -8,8 +8,8 @@ clear:                              - Clear the collection.
 save:                               - Save the collection to a file.
 execute_script {file_name}:         - Read and execute a script from the specified file. The script contains commands in the same form in which the user enters them interactively.
 exit:                               - Exit the program (without saving to a file).
-remove_greater {key}:           - Remove from the collection all elements greater than the given one.
-remove_lower {key}:             - Remove all elements from the collection that are smaller than the given one.
+remove_greater {key}:               - Remove from the collection all elements greater than the given one.
+remove_lower {key}:                 - Remove all elements from the collection that are smaller than the given one.
 average_of_impact_speed:            - Display the average value of the impactSpeed field for all items in the collection.
 add_commands_to_file:               - Add commands to file 'commands.csv'
 max_by_impact_speed:                - Print any object from the collection whose impactSpeed field value is the maximum.

@@ -7,13 +7,14 @@ import com.ClientServerApp.Model.Enums.Mood;
 import com.ClientServerApp.Model.Enums.WeaponType;
 import com.ClientServerApp.Model.HumanBeing.Validators.ImpactSpeedValidator;
 import com.ClientServerApp.Model.ValidatorInterface.StringValidator;
-import static com.ClientServerApp.MyInput.MyInput.input;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Objects;
+
+import static com.ClientServerApp.MyInput.MyInput.input;
 
 public class HumanBeing implements Comparable<HumanBeing>, Serializable {
     @Serial
@@ -214,9 +215,9 @@ public class HumanBeing implements Comparable<HumanBeing>, Serializable {
 
     @Override
     public String toString() {
-        return  this.id + "\n" + this.name + "\n" + this.coordinates + "\n" + this.creationDate +
-                "\n" + this.realHero + "\n" + this.hasToothpick + "\n" +
-                this.impactSpeed + "\n" + this.weaponType + "\n" + this.mood + "\n" + this.car;
+        return  "ID: " + this.id + "\n" + "Name: " + this.name + "\n" + this.coordinates + "\n" + "Creation date: " + this.creationDate +
+                "\n" + "Real hero: " + this.realHero + "\n" + "Has toothpick: " + this.hasToothpick + "\n" +
+                "Impact speed: " + this.impactSpeed + "\n" + "Weapon type: " + this.weaponType + "\n" + "Mood:" + this.mood + "\n" + this.car;
     }
 
     @Override

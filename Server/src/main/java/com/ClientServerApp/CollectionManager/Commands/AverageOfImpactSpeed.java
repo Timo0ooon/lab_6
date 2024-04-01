@@ -6,6 +6,7 @@ import java.util.Hashtable;
 import java.util.List;
 
 public class AverageOfImpactSpeed implements Command {
+
     @Override
     public String execute(Hashtable<Integer, HumanBeing> collection) {
         if (collection.isEmpty())

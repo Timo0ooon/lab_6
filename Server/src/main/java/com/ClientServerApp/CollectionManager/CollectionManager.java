@@ -6,6 +6,9 @@ import com.ClientServerApp.Model.HumanBeing.HumanBeing;
 import com.ClientServerApp.Request.Request;
 import com.ClientServerApp.Server.Server;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.HashMap;
 import java.util.Hashtable;
 
@@ -15,12 +18,15 @@ public class CollectionManager {
     private final HashMap<String, Command> commands = new HashMap<>();
     private final HashMap<String, CommandWithArgument> commandsWithArguments = new HashMap<>();
     private final HashMap<String, CommandWithTwoArguments> commandsWithTwoArguments = new HashMap<>();
-
+    private final Logger logger = LoggerFactory.getLogger(Server.class);
     public CollectionManager(String fileName) {
         CSVReader reader = new CSVReader();
+
         this.collection = reader.read("Server\\src\\main\\java\\com\\ClientServerApp\\Data\\" + fileName);
         if (this.collection == null)
             this.collection = new Hashtable<>();
+
+        this.logger.info("[Server]: collection loaded!");
 
         this.commands.put("average_of_impact_speed", new AverageOfImpactSpeed());
         this.commands.put("clear", new Clear());
@@ -38,8 +44,12 @@ public class CollectionManager {
     }
 
     public String findCommand(Request request) {
+
         HumanBeing human = request.getHuman();
         String userLine = request.getCommand();
+
+        this.logger.info("[Server]: finds command: " + userLine);
+
         if (userLine.isEmpty() || userLine.replaceAll(" ", "").isEmpty())
             return "Unknown command!";
 

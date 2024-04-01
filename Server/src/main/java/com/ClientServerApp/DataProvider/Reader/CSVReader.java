@@ -1,11 +1,16 @@
 package com.ClientServerApp.DataProvider.Reader;
 
 import com.ClientServerApp.Model.HumanBeing.HumanBeing;
+import com.ClientServerApp.Server.Server;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.util.*;
 
 public class CSVReader implements FileReader {
+    private final Logger logger = LoggerFactory.getLogger(Server.class);
     @Override
     public Hashtable<Integer, HumanBeing> read(String filePath) {
         try (
@@ -18,9 +23,9 @@ public class CSVReader implements FileReader {
         catch (IOException | ClassNotFoundException e) {
             String message = e.getMessage();
             if (message == null)
-                System.out.println("File is empty");
+                this.logger.error("[Server]: File is empty!");
             else
-                System.out.println(message);
+                this.logger.error("[Server]: " + e.getMessage());
         }
 
         return null;

@@ -1,10 +1,11 @@
 package com.ClientServerApp.Model.Car;
 
-import static com.ClientServerApp.MyInput.MyInput.input;
 import com.ClientServerApp.Model.ValidatorInterface.StringValidator;
 
 import java.io.Serial;
 import java.io.Serializable;
+
+import static com.ClientServerApp.MyInput.MyInput.input;
 
 public class Car implements Serializable {
     @Serial
@@ -28,5 +29,5 @@ public class Car implements Serializable {
     }
 
     @Override
-    public String toString() { return this.name; }
+    public String toString() { return "Car name: " + this.name; }
 }
