@@ -7,6 +7,9 @@ import java.util.Hashtable;
 public class Show implements Command {
     @Override
     public String execute(Hashtable<Integer, HumanBeing> collection) {
+        if (collection.isEmpty())
+            return "Collection is empty!";
+
         StringBuilder info = new StringBuilder("Users:\n");
 
         collection.forEach((key, value) -> {

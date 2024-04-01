@@ -3,7 +3,6 @@ package com.ClientServerApp.Client;
 import com.ClientServerApp.CommandManager.CommandManager;
 import com.ClientServerApp.CommandManager.Commands.ExecuteScript.ExecuteScript;
 import com.ClientServerApp.Model.HumanBeing.HumanBeing;
-import static com.ClientServerApp.MyInput.MyInput.input;
 import com.ClientServerApp.Request.Request;
 
 import java.io.IOException;
@@ -11,13 +10,15 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+import static com.ClientServerApp.MyInput.MyInput.input;
+
 public class Client {
     private static final CommandManager commandManager = new CommandManager();
 
     public static void run() {
         int port;
 
-        while (true) {
+        /*while (true) {
             try {
                 System.out.print("Write port to connect to server: ");
                 port = Integer.parseInt(input());
@@ -27,10 +28,10 @@ public class Client {
             catch(NumberFormatException e) {
                 System.out.print("Value must be integer! ");
             }
-        }
+        }*/
 
         try (
-                Socket socket = new Socket("localhost", port);
+                Socket socket = new Socket("localhost", 8052);
                 ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
                 ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
         ) {
@@ -56,7 +57,6 @@ public class Client {
                             String response = (String) objectInputStream.readObject();
                             System.out.println(response);
                         }
-
                     }
                  }
 

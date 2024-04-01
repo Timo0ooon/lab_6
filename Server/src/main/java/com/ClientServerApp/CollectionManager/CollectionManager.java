@@ -4,6 +4,7 @@ import com.ClientServerApp.CollectionManager.Commands.*;
 import com.ClientServerApp.DataProvider.Reader.CSVReader;
 import com.ClientServerApp.Model.HumanBeing.HumanBeing;
 import com.ClientServerApp.Request.Request;
+import com.ClientServerApp.Server.Server;
 
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -15,21 +16,23 @@ public class CollectionManager {
     private final HashMap<String, CommandWithArgument> commandsWithArguments = new HashMap<>();
     private final HashMap<String, CommandWithTwoArguments> commandsWithTwoArguments = new HashMap<>();
 
-    public CollectionManager() {
+    public CollectionManager(String fileName) {
         CSVReader reader = new CSVReader();
-        this.collection = reader.read("Server\\src\\main\\java\\com\\ClientServerApp\\Data\\data.csv");
+        this.collection = reader.read("Server\\src\\main\\java\\com\\ClientServerApp\\Data\\" + fileName);
         if (this.collection == null)
             this.collection = new Hashtable<>();
 
         this.commands.put("average_of_impact_speed", new AverageOfImpactSpeed());
         this.commands.put("clear", new Clear());
         this.commands.put("info", new Info());
-        this.commands.put("save", new Save());
+        this.commands.put("save", new Save(fileName));
         this.commands.put("show", new Show());
         this.commands.put("max_by_impact_speed", new MaxByImpactSpeed());
 
         this.commandsWithArguments.put("remove_key", new RemoveKey());
         this.commandsWithTwoArguments.put("update_by_id", new UpdateByID());
+        this.commandsWithArguments.put("remove_greater", new RemoveGreater());
+        this.commandsWithArguments.put("remove_lower", new RemoveLower());
 
         this.commandsWithTwoArguments.put("insert", new Insert());
     }

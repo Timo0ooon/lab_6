@@ -8,6 +8,9 @@ import java.util.List;
 public class AverageOfImpactSpeed implements Command {
     @Override
     public String execute(Hashtable<Integer, HumanBeing> collection) {
+        if (collection.isEmpty())
+            return "Collection is empty!";
+
         List<Integer> values = collection.values().stream().map(HumanBeing::getImpactSpeed).toList();
 
         if (!values.isEmpty())

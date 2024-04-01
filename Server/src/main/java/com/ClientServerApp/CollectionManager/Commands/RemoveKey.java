@@ -8,6 +8,9 @@ import java.util.Hashtable;
 public class RemoveKey implements CommandWithArgument {
     @Override
     public String execute(Hashtable<Integer, HumanBeing> collection, String argument) {
+        if (collection.isEmpty())
+            return "Collection is empty!";
+
         try {
             Integer key = Integer.parseInt(argument);
             if (!collection.containsKey(key))

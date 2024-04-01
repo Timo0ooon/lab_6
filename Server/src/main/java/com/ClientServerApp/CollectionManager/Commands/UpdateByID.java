@@ -9,6 +9,9 @@ public class UpdateByID implements CommandWithTwoArguments {
 
     @Override
     public String execute(Hashtable<Integer, HumanBeing> collection, String argument, HumanBeing user) {
+        if (collection.isEmpty())
+            return "Collection is empty!";
+
         try {
             Integer id = Integer.parseInt(argument);
             if (collection.values().stream().filter( el -> el.getId().equals(id)).toList().isEmpty())

@@ -10,6 +10,9 @@ public class Info implements Command {
 
     @Override
     public String execute(Hashtable<Integer, HumanBeing> collection) {
+        if (collection.isEmpty())
+            return "Collection is empty!";
+
         List<LocalDate> dates = collection.values().stream().map(HumanBeing::getCreationDate).toList();
         LocalDate lastDay = dates.stream().max((el, el1) -> {
             if (el.equals(el1))
@@ -19,6 +22,6 @@ public class Info implements Command {
             return 1;
         }).get();
 
-        return "Type of collection: " + collection.getClass() + "\n" + "Size of collection: " + collection.size() + "\n" + "Last day of editing" + lastDay;
+        return "Type of collection: " + collection.getClass() + "\n" + "Size of collection: " + collection.size() + "\n" + "Last day of editing: " + lastDay;
     }
 }

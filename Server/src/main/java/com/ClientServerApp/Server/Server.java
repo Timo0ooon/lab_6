@@ -2,20 +2,26 @@ package com.ClientServerApp.Server;
 
 import com.ClientServerApp.CollectionManager.CollectionManager;
 import com.ClientServerApp.Request.Request;
-import org.w3c.dom.ls.LSOutput;
 
-import java.net.*;
-import java.io.*;
+import org.apache.log4j.PropertyConfigurator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
 
 public class Server {
-    private static final CollectionManager collectionManager = new CollectionManager();
+    private final CollectionManager collectionManager = new CollectionManager("data.csv");
+    private final Logger logger = LoggerFactory.getLogger(Server.class);
 
-    public static void run() {
+    public void run() {
         try (
-                ServerSocket serverSocket = new ServerSocket(0)
+                ServerSocket serverSocket = new ServerSocket(8052)
         ) {
-            System.out.println("[Server]: port is " + serverSocket.getLocalPort());
+            logger.info("[Server]: port is " + serverSocket.getLocalPort());
 
             while (true) {
                 Socket userSocket = serverSocket.accept();
@@ -25,30 +31,29 @@ public class Server {
                 ) {
 
                     while (true) {
-                        System.out.println("[Server]: Waiting request...");
+                        logger.info("[Server]: Waiting request...");
                         Request request = (Request) objectInputStream.readObject();
                         String response = collectionManager.findCommand(request);
 
                         objectOutputStream.writeObject(response);
                         objectOutputStream.flush();
-                        System.out.println("[Server]: Response sent!");
+                        logger.info("[Server]: Response sent!");
                     }
                 }
                 catch (IOException e) {
-                    System.out.println("[Server]: " + e.getMessage());
+                    logger.error("[Server]: " + e.getMessage(), e);
                 }
             }
         }
 
         catch (IOException | ClassNotFoundException e) {
-            System.out.println("[Server]: " + e.getMessage());
+            logger.error("[Server]: " + e.getMessage(), e);
         }
     }
 
     public static void main(String[] args) {
-        ProcessBuilder processBuilder = new ProcessBuilder("userCommand");
-        processBuilder.environment().put("pathData", "data.csv");
-        Server.run();
+        PropertyConfigurator.configure("Server\\src\\main\\resources\\log4j.properties");
+        Server server = new Server();
+        server.run();
     }
-
 }
