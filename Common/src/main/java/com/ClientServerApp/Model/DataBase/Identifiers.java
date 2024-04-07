@@ -3,7 +3,11 @@ package com.ClientServerApp.Model.DataBase;
 import java.util.ArrayList;
 
 public class Identifiers {
-    public static ArrayList<Integer> idList = new ArrayList<>();
+    private static final ArrayList<Integer> idList = new ArrayList<>();
+
+    public static void add(Integer id) {
+        idList.add(id);
+    }
 
     public static Integer generate() {
         int newID = 0;
@@ -16,11 +20,8 @@ public class Identifiers {
         return newID;
     }
 
-    public static boolean delete(Integer ID) {
-        if (idList.contains(ID)) {
-            idList.remove(ID);
-            return true;
-        }
-        return false;
+    public static ArrayList<Integer> get() { return idList; }
+    public static void delete(Integer ID) {
+        idList.remove(ID);
     }
 }

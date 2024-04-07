@@ -10,11 +10,15 @@ public class Show implements Command {
         if (collection.isEmpty())
             return "Collection is empty!";
 
-        StringBuilder info = new StringBuilder("Users:\n");
+        StringBuilder info = new StringBuilder("\nUsers:\n");
 
         collection.forEach((key, value) -> {
-            info.append("User[").append(key).append("]:\n");
-            info.append(value.toString()).append("\n");
+            info.append("\t\t").append("User[").append(key).append("]:\n");
+            StringBuilder user = new StringBuilder();
+            for (String field: value.toString().split("\n")) {
+                 user.append("\t\t\t\t").append(field).append("\n");
+            }
+            info.append(user).append("\n");
         });
 
         return String.valueOf(info);

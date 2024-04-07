@@ -16,9 +16,6 @@ public class Insert implements CommandWithTwoArguments {
         try {
             Integer key = Integer.parseInt(argument);
 
-            if (collection.containsKey(key))
-                return "Such a key already exists!";
-
             collection.put(key, user);
 
             return "Person[" + argument + "]" + " added!";

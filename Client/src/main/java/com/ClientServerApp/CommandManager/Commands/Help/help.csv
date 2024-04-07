@@ -2,7 +2,7 @@ help:                               - Display help on available commands.
 info:                               - Print information about the collection (type, initialization date, number of elements, etc.) to standard output.
 show:                               - Print to standard output all the elements of the collection in string representation.
 insert {element}:                   - Add a new element with the given key.
-update_id {element}:                - Update the value of a collection element whose id is equal to the given one.
+update_by_id {element}:             - Update the value of a collection element whose id is equal to the given one.
 remove_key {key}:                   - Remove an element from a collection by its key.
 clear:                              - Clear the collection.
 save:                               - Save the collection to a file.

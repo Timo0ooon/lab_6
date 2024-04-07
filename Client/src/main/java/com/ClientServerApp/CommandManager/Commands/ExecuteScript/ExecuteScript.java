@@ -4,6 +4,7 @@ package com.ClientServerApp.CommandManager.Commands.ExecuteScript;
 import com.ClientServerApp.Request.Request;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,9 +22,13 @@ public class ExecuteScript {
 
     public static ArrayList<String> load() {
         ArrayList<String> commands = new ArrayList<>();
+        final String separator = File.separator;
 
         try (
-                FileReader fileReader = new FileReader("Client\\src\\main\\java\\com\\ClientServerApp\\CommandManager\\Commands\\ExecuteScript\\commands.csv");
+                FileReader fileReader = new FileReader("Client" + separator +
+                        "src" + separator + "main" + separator + "java" + separator + "com" + separator +
+                        "ClientServerApp" + separator + "CommandManager" + separator + "Commands" +
+                        separator + "ExecuteScript" + separator + "commands.csv");
                 BufferedReader bufferedReader = new BufferedReader(fileReader);
         ) {
 

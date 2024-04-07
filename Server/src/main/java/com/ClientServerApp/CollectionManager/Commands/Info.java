@@ -22,6 +22,6 @@ public class Info implements Command {
             return 1;
         }).get();
 
-        return "Type of collection: " + collection.getClass() + "\n" + "Size of collection: " + collection.size() + "\n" + "Last day of editing: " + lastDay;
+        return "\nInfo:\n\t\tType of collection: " + collection.getClass() + "\n" + "\t\tSize of collection: " + collection.size() + "\n" + "\t\tLast day of editing: " + lastDay;
     }
 }

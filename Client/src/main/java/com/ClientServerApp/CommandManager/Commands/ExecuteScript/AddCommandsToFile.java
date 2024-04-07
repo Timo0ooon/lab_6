@@ -1,18 +1,25 @@
 package com.ClientServerApp.CommandManager.Commands.ExecuteScript;
 
 import com.ClientServerApp.CommandManager.Commands.Command;
-import static com.ClientServerApp.MyInput.MyInput.input;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import static com.ClientServerApp.MyInput.MyInput.input;
+
 public class AddCommandsToFile implements Command {
     @Override
     public void execute() {
+        final String separator = File.separator;
+
         try (
-                FileWriter fileWriter = new FileWriter("Client\\src\\main\\java\\com\\ClientServerApp\\CommandManager\\Commands\\ExecuteScript\\commands.csv");
+                FileWriter fileWriter = new FileWriter("Client" + separator +
+                        "src" + separator + "main" + separator + "java" + separator + "com" + separator +
+                        "ClientServerApp" + separator + "CommandManager" + separator + "Commands" +
+                        separator + "ExecuteScript" + separator + "commands.csv");
                 BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 
         ) {
@@ -41,6 +48,7 @@ public class AddCommandsToFile implements Command {
 
             if (userLine.equalsIgnoreCase("break"))
                 break;
+
             userCommands.add(userLine.toLowerCase());
         }
 
