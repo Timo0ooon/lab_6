@@ -24,17 +24,18 @@ public class RemoveGreater implements CommandWithArgument{
                 return "Key is not in collection!";
 
             ArrayList<Integer> idList = new ArrayList<>();
-            ArrayList<HumanBeing> values = new ArrayList<>();
+            ArrayList<Integer> keys = new ArrayList<>();
 
-            for (HumanBeing human: collection.values()) {
+            for (Integer keyValue: collection.keySet()) {
+                HumanBeing human = collection.get(keyValue);
                 if (human.getId() > collection.get(key).getId()) {
                     idList.add(human.getId());
-                    values.add(human);
+                    keys.add(keyValue);
                 }
             }
 
-            for (HumanBeing human: values) {
-                collection.remove(human);
+            for (Integer keyValue: keys) {
+                collection.remove(keyValue);
             }
 
             for (Integer id: idList) {

@@ -24,7 +24,7 @@ public class Client {
                 ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
                 ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
         ) {
-            ArrayList<Integer> idList = (ArrayList<Integer>) objectInputStream.readObject();
+            ArrayList<Integer> idList = (ArrayList<Integer>) objectInputStream.readObject();  // requests stored identifiers on the server.
             for (int id: idList) {
                 Identifiers.add(id);
             }
@@ -35,7 +35,7 @@ public class Client {
                 System.out.print("[Message] \t\tWrite command: ");
                 String userLine = input().toLowerCase();
 
-                if (userLine.equals("execute_script")) {
+                if (userLine.equals("execute_script")) {  // Finds in commandManager and sends request to Server.
                     for (Request request: ExecuteScript.makeRequest()) {
                         String command = request.getCommand();
 

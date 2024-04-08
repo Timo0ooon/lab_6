@@ -1,27 +1,28 @@
 package com.ClientServerApp.Model.DataBase;
 
-import java.util.ArrayList;
+import java.util.TreeSet;
 
 public class Identifiers {
-    private static final ArrayList<Integer> idList = new ArrayList<>();
+    private static final TreeSet<Integer> idSet = new TreeSet<>();
 
     public static void add(Integer id) {
-        idList.add(id);
+        idSet.add(id);
     }
 
     public static Integer generate() {
         int newID = 0;
 
-        if (!idList.isEmpty())
-            newID = idList.get(idList.size() - 1) + 1;
+        if (!idSet.isEmpty()) {
+            newID = idSet.last() + 1;
+        }
 
-        idList.add(newID);
+        idSet.add(newID);
 
         return newID;
     }
 
-    public static ArrayList<Integer> get() { return idList; }
+    public static TreeSet<Integer> get() { return idSet; }
     public static void delete(Integer ID) {
-        idList.remove(ID);
+        idSet.remove(ID);
     }
 }

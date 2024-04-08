@@ -6,7 +6,7 @@ update_by_id {element}:             - Update the value of a collection element w
 remove_key {key}:                   - Remove an element from a collection by its key.
 clear:                              - Clear the collection.
 save:                               - Save the collection to a file.
-execute_script {file_name}:         - Read and execute a script from the specified file. The script contains commands in the same form in which the user enters them interactively.
+execute_script:                     - Read and execute a script from the specified file. The script contains commands in the same form in which the user enters them interactively.
 exit:                               - Exit the program (without saving to a file).
 remove_greater {key}:               - Remove from the collection all elements greater than the given one.
 remove_lower {key}:                 - Remove all elements from the collection that are smaller than the given one.

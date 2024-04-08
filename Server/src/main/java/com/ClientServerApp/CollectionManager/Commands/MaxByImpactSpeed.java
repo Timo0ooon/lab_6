@@ -10,8 +10,14 @@ public class MaxByImpactSpeed implements Command{
         if (collection.isEmpty())
             return "Collection is empty!";
 
-        return collection.values().stream().
+        HumanBeing human = collection.values().stream().
                 max((firstHuman, secondHuman) -> firstHuman.getImpactSpeed().compareTo(secondHuman.getImpactSpeed())).
-                get().toString();
+                get();
+
+        StringBuilder stringBuilder = new StringBuilder("\nPerson:\n");
+        for (String field: human.toString().split("\n")) {
+            stringBuilder.append("\t\t").append(field).append("\n");
+        }
+        return String.valueOf(stringBuilder);
     }
 }

@@ -27,11 +27,13 @@ public class Server {
             String ANSI_BOLD = "\u001B[1m";
             String ANSI_RESET = "\u001B[0m";
 
-            this.logger.info("[Server]: port is " + ANSI_BOLD + serverSocket.getLocalPort() + ANSI_RESET);
-
             while (true) {
+                this.logger.info("[Server]: port is " + ANSI_BOLD + serverSocket.getLocalPort() + ANSI_RESET);
+
                 CollectionManager collectionManager = new CollectionManager(this.fileName);
                 Socket userSocket = serverSocket.accept();
+                this.logger.info("[Server]: user connected!");
+
                 try(
                         ObjectInputStream objectInputStream = new ObjectInputStream(userSocket.getInputStream());
                         ObjectOutputStream objectOutputStream = new ObjectOutputStream(userSocket.getOutputStream());
