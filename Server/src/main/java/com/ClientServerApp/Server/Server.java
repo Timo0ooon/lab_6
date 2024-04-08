@@ -6,18 +6,18 @@ import org.apache.log4j.PropertyConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashMap;
+
+import static java.io.File.separator;
 
 public class Server {
-    private final String fileName;
     private final Logger logger = LoggerFactory.getLogger(Server.class);
 
-    public Server(String fileName) { this.fileName = fileName; }
 
     public void run() {
         try (
@@ -30,7 +30,6 @@ public class Server {
             while (true) {
                 this.logger.info("[Server]: port is " + ANSI_BOLD + serverSocket.getLocalPort() + ANSI_RESET);
 
-                CollectionManager collectionManager = new CollectionManager(this.fileName);
                 Socket userSocket = serverSocket.accept();
                 this.logger.info("[Server]: user connected!");
 
@@ -38,12 +37,23 @@ public class Server {
                         ObjectInputStream objectInputStream = new ObjectInputStream(userSocket.getInputStream());
                         ObjectOutputStream objectOutputStream = new ObjectOutputStream(userSocket.getOutputStream());
                 ) {
+                    HashMap<Integer, String> choice = FileSelection.execute();
+                    objectOutputStream.writeObject(choice);
+                    objectOutputStream.flush();
+
+                    String fileName = (String) objectInputStream.readObject();
+
+
+                    CollectionManager collectionManager = new CollectionManager(fileName);
+
+
                     objectOutputStream.writeObject(collectionManager.getIdList());
                     objectOutputStream.flush();
 
                     while (true) {
                         this.logger.info("[Server]: waiting request...");
                         Request request = (Request) objectInputStream.readObject();
+
                         String response = collectionManager.findCommand(request);
 
                         objectOutputStream.writeObject(response);
@@ -64,10 +74,9 @@ public class Server {
     }
 
     public static void main(String[] args) {
-        final String separator = File.separator;
         PropertyConfigurator.configure("Server" + separator + "src"  + separator +  "main"
                 + separator + "resources"  + separator + "log4j.properties");
-        Server server = new Server("data.csv");
+        Server server = new Server();
         server.run();
     }
 }

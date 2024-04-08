@@ -11,6 +11,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import static com.ClientServerApp.MyInput.MyInput.input;
 
@@ -22,9 +23,13 @@ public class Client {
         try (
                 Socket socket = UserConnection.connect();
                 ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
-                ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
+                ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream())
         ) {
-            ArrayList<Integer> idList = (ArrayList<Integer>) objectInputStream.readObject();  // requests stored identifiers on the server.
+            objectOutputStream.writeObject(UserFileChoice.execute((HashMap<Integer, String>) objectInputStream.readObject()));
+            objectOutputStream.flush();
+
+
+            ArrayList<Integer> idList = (ArrayList<Integer>) objectInputStream.readObject();
             for (int id: idList) {
                 Identifiers.add(id);
             }
@@ -35,7 +40,7 @@ public class Client {
                 System.out.print("[Message] \t\tWrite command: ");
                 String userLine = input().toLowerCase();
 
-                if (userLine.equals("execute_script")) {  // Finds in commandManager and sends request to Server.
+                if (userLine.equals("execute_script")) {
                     for (Request request: ExecuteScript.makeRequest()) {
                         String command = request.getCommand();
 
@@ -71,7 +76,6 @@ public class Client {
 
                     String response = (String) objectInputStream.readObject();
                     System.out.println("[Message] \t\t" + response);
-
                 }
             }
         }
