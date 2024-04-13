@@ -458,6 +458,8 @@ public class StreamExample {
 
 ### 9. Шаблоны проектирования: Decorator, Iterator, Factory method, Command, Flyweight, Interpreter, Singleton, Strategy, Adapter, Facade, Proxy.
 
+https://refactoring.guru/ru - Загляни
+
 Шаблоны проектирования (Design Patterns) являются bewстановочными решениями для распространенных проблем, возникающих при разработке программного обеспечения. Вот краткое описание каждого из перечисленных вами шаблонов проектирования:
 
 ***Decorator (Декоратор):***
