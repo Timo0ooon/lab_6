@@ -1,10 +1,8 @@
 package com.ClientServerApp.Client;
 
 import com.ClientServerApp.CommandManager.CommandManager;
-import com.ClientServerApp.CommandManager.Commands.ExecuteScript.ExecuteScript;
 import com.ClientServerApp.Model.DataBase.Identifiers;
-import com.ClientServerApp.Model.HumanBeing.HumanBeing;
-import com.ClientServerApp.Request.Request;
+import com.ClientServerApp.Write;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -15,6 +13,12 @@ import java.util.HashMap;
 
 import static com.ClientServerApp.MyInput.MyInput.input;
 
+/**
+ * Client class processes requests. After the client connects it does:
+ * 1) receives a list of files that you can work with.
+ * 2) receives a list of busy identifiers.
+ * 3) executes commands or sends them to the server.
+ */
 public class Client {
     private static final CommandManager commandManager = new CommandManager();
 
@@ -25,63 +29,55 @@ public class Client {
                 ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
                 ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream())
         ) {
-            objectOutputStream.writeObject(UserFileChoice.execute((HashMap<Integer, String>) objectInputStream.readObject()));
+            Object object;
+
+            //*****\\                                     [User File choice]                                     //*****\\
+            object = objectInputStream.readObject();
+            HashMap<Integer, String> choice = new HashMap<>();
+            if (object instanceof HashMap<?, ?>
+                    && ((HashMap<?, ?>) object).keySet().stream().allMatch(el -> el instanceof Integer)
+                    && ((HashMap<?, ?>) object).values().stream().allMatch(el -> el instanceof String)) {
+                choice = (HashMap<Integer, String>) object;
+            }
+            objectOutputStream.writeObject(UserFileChoice.execute(choice));
             objectOutputStream.flush();
 
 
-            ArrayList<Integer> idList = (ArrayList<Integer>) objectInputStream.readObject();
+            //*****\\                                     [Setting identifiers]                                   //*****\\
+            object = objectInputStream.readObject();
+            ArrayList<Integer> idList = new ArrayList<>();
+            if (object instanceof ArrayList<?> && ((ArrayList<?>) object).stream().allMatch(el -> el instanceof Integer)) {
+                idList = (ArrayList<Integer>) object;
+            }
+
             for (int id: idList) {
                 Identifiers.add(id);
             }
+            Write.writeMessage("Write 'help' to see commands\n");
 
-            System.out.println("[Message] \t\tWrite 'help' to see commands");
 
+            //*****\\                                     [User is working]                                   //*****\\
             while (true) {
-                System.out.print("[Message] \t\tWrite command: ");
+                Write.writeMessage("Write command: ");
                 String userLine = input().toLowerCase();
+                if (userLine.replaceAll(" ", "").isEmpty())
+                    continue;
 
-                if (userLine.equals("execute_script")) {
-                    for (Request request: ExecuteScript.makeRequest()) {
-                        String command = request.getCommand();
-
-                        if (commandManager.getCommands().containsKey(command))
-                            commandManager.find(command);
-                        else {
-                            String onlyCommand = command.split(" ")[0];
-                            if (onlyCommand.equals("insert") || onlyCommand.equals("update_by_id") )
-                                request = new Request(request.getCommand(), new HumanBeing());
-
-                            objectOutputStream.writeObject(request);
-                            objectOutputStream.flush();
-
-                            String response = (String) objectInputStream.readObject();
-                            System.out.println(response);
-                        }
-                    }
-                }
-
-                else if (commandManager.getCommands().containsKey(userLine))
-                    commandManager.find(userLine);
-
+                String response = commandManager.find(userLine, objectInputStream, objectOutputStream);
+                if (response != null)
+                    Write.writeMessage(response + "\n");
                 else {
-                    Request request;
-                    String command = userLine.split(" ")[0];
-                    if (command.equals("insert") || command.equals("update_by_id"))
-                        request = new Request(userLine, new HumanBeing());
-                    else
-                        request = new Request(userLine);
-
-                    objectOutputStream.writeObject(request);
-                    objectOutputStream.flush();
-
-                    String response = (String) objectInputStream.readObject();
-                    System.out.println("[Message] \t\t" + response);
+                    Write.writeError("Unknown command!");
                 }
+
             }
         }
 
         catch (IOException | ClassNotFoundException e) {
-            System.out.println("[Error]  \t\t" + e.getMessage());
+            Write.writeError(e.getMessage());
+        }
+        catch (Exception e) {
+            Write.writeError("Unknown error!");
         }
     }
 

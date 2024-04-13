@@ -1,5 +1,7 @@
 package com.ClientServerApp.Client;
 
+import com.ClientServerApp.Write;
+
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.Socket;
@@ -11,24 +13,25 @@ public class UserConnection {
         while (true) {
             try {
                 System.out.print("[Message] \t\tWrite port to connect to server: ");
-                int port = Integer.parseInt(input());
+                String userLine = input();
+                int port = Integer.parseInt(userLine);
 
                 try {
                     Socket socket = new Socket("localhost", port);
-                    System.out.println("[Message] \t\tConnected!");
+                    Write.writeMessage("Connected!\n");
 
                     return socket;
 
                 }
                 catch (ConnectException e) {
-                    System.out.println("[Error]  \t\tWrong port!");
+                    Write.writeError("Wrong port!");
                 }
                 catch (IOException e) {
-                    System.out.println("[Error] " + "\t\t" + e.getMessage());
+                    Write.writeError(e.getMessage());
                 }
             }
             catch(NumberFormatException e) {
-                System.out.println("[Error]   \t\tValue must be integer! ");
+                Write.writeError("Value must be integer!");
             }
         }
     }

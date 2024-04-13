@@ -15,6 +15,12 @@ import java.util.HashMap;
 
 import static java.io.File.separator;
 
+/**
+ * Server class processes requests. After the client connects it does:
+ * 1) sends a list of files that you can work with.
+ * 2) sends a list of busy identifiers.
+ * 3) waits for commands from the client to execute them
+ */
 public class Server {
     private final Logger logger = LoggerFactory.getLogger(Server.class);
 

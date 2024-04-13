@@ -17,7 +17,14 @@ public class CSVReader implements FileReader {
                 FileInputStream fileInputStream = new FileInputStream(filePath);
                 ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
         ) {
-            return (Hashtable<Integer, HumanBeing>) objectInputStream.readObject();
+            Object object = objectInputStream.readObject();
+            Hashtable<Integer, HumanBeing> collection = new Hashtable<>();
+            if (object instanceof Hashtable<?,?>
+                    && ((Hashtable<?, ?>) object).keySet().stream().allMatch(el -> el instanceof Integer)
+                    && ((Hashtable<?, ?>) object).values().stream().allMatch(el -> el instanceof HumanBeing)) {
+                collection = (Hashtable<Integer, HumanBeing>) object;
+            }
+            return collection;
         }
 
         catch (IOException | ClassNotFoundException e) {
@@ -26,6 +33,9 @@ public class CSVReader implements FileReader {
                 this.logger.error("[Server]: File is empty!");
             else
                 this.logger.error("[Server]: " + e.getMessage());
+        }
+        catch (Exception e) {
+            this.logger.error("[Server]: Unknown error!");
         }
 
         return null;

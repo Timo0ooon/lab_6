@@ -1,5 +1,7 @@
 package com.ClientServerApp.Client;
 
+import com.ClientServerApp.Write;
+
 import java.util.HashMap;
 
 import static com.ClientServerApp.MyInput.MyInput.input;
@@ -16,16 +18,16 @@ public class UserFileChoice {
         String fileName;
         while (true) {
             try {
-                System.out.print("[Message] \t\tWrite a number to work with file: ");
+                Write.writeMessage("Write a number to work with file: ");
                 Integer value = Integer.valueOf(input());
                 if (choice.containsKey(value)) {
                     fileName = choice.get(value);
                     break;
                 }
-                System.out.println("[Error]  \t\tThe number must be from the list!");
+                Write.writeError("The number must be from the list!");
             }
             catch (NumberFormatException e) {
-                System.out.println("[Error]  \t\tValue must be a number!");
+                Write.writeError("The value must be Integer!");
             }
         }
         return fileName;

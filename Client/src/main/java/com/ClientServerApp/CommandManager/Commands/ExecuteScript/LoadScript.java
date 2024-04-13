@@ -1,7 +1,9 @@
 package com.ClientServerApp.CommandManager.Commands.ExecuteScript;
 
 
+import com.ClientServerApp.Model.HumanBeing.HumanBeing;
 import com.ClientServerApp.Request.Request;
+import com.ClientServerApp.Write;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -9,18 +11,22 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class ExecuteScript {
-    public static ArrayList<Request> makeRequest() {
+public class LoadScript {
+    public static ArrayList<Request> makeRequests() {
         ArrayList<String> commands = load();
         ArrayList<Request> requests = new ArrayList<>();
 
         for (String command: commands) {
-            requests.add(new Request(command));
+            command = command.toLowerCase();
+            if (command.equals("insert") || command.equals("update_by_id"))
+                requests.add(new Request(command, new HumanBeing()));
+            else
+                requests.add(new Request(command));
         }
         return requests;
     }
 
-    public static ArrayList<String> load() {
+    private static ArrayList<String> load() {
         ArrayList<String> commands = new ArrayList<>();
         final String separator = File.separator;
 
@@ -40,7 +46,7 @@ public class ExecuteScript {
         }
 
         catch (IOException e) {
-            System.out.println(e.getMessage());
+            Write.writeError(e.getMessage());
         }
 
         return commands;

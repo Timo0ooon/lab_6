@@ -1,6 +1,7 @@
 package com.ClientServerApp.CommandManager.Commands.ExecuteScript;
 
 import com.ClientServerApp.CommandManager.Commands.Command;
+import com.ClientServerApp.Write;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -32,7 +33,7 @@ public class AddCommandsToFile implements Command {
         }
 
         catch (IOException e) {
-            System.out.println(e.getMessage());
+            Write.writeError(e.getMessage());
         }
 
     }
