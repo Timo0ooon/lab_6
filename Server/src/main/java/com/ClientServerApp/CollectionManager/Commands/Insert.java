@@ -23,8 +23,7 @@ public class Insert implements CommandWithTwoArguments {
         catch (NumberFormatException e) {
             this.logger.error("[Server]: " + e.getMessage());
         }
-
-        return "";
+        return "Error! Argument must be a number!";
 
     }
 }

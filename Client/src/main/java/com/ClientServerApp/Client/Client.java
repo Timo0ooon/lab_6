@@ -69,7 +69,6 @@ public class Client {
                 else {
                     Write.writeError("Unknown command!");
                 }
-
             }
         }
 

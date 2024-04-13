@@ -31,6 +31,7 @@ public class CommandManager {
 
         if (MyConsts.commandsOnClient.contains(userLine.toLowerCase())) {
             commands.get(userLine.toLowerCase()).execute();
+            response = "Done!";
         }
         else if (MyConsts.hybridCommands.contains(userLine)) {
             for (Request request: LoadScript.makeRequests()) {
