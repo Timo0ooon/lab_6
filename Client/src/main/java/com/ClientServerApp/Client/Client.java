@@ -33,6 +33,8 @@ public class Client {
             Object object;
             Response response;
 
+            System.out.println(Welcome.execute());
+
             //*****\\                                     [User File choice]                                     //*****\\
             response = (Response) objectInputStream.readObject();
             object = response.getObject();
@@ -45,7 +47,6 @@ public class Client {
             objectOutputStream.writeObject(UserFileChoice.execute(choice));
             objectOutputStream.flush();
 
-
             //*****\\                                     [Setting identifiers]                                   //*****\\
             response = (Response) objectInputStream.readObject();
             object = response.getObject();
@@ -57,6 +58,7 @@ public class Client {
             for (int id: idList) {
                 Identifiers.add(id);
             }
+
             Write.writeMessage("Write 'help' to see commands\n");
 
 
