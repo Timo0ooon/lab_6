@@ -12,18 +12,20 @@ import java.util.Hashtable;
 public class CSVWriter implements FileWriter{
     private final Logger logger = LoggerFactory.getLogger(Server.class);
     @Override
-    public void write(Hashtable<Integer, HumanBeing> collection, String filePath) {
+    public boolean write(Hashtable<Integer, HumanBeing> collection, String filePath) {
         try (
                 FileOutputStream fileOutputStream = new FileOutputStream(filePath);
                 ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
         ) {
             objectOutputStream.writeObject(collection);
             this.logger.info("[Server]: Collection saved!");
+            return true;
 
         }
 
         catch (IOException e) {
             this.logger.error("[Server]: " + e.getMessage());
+            return false;
         }
     }
 }

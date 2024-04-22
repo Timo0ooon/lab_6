@@ -1,14 +1,15 @@
 package com.ClientServerApp.CollectionManager.Commands;
 
 import com.ClientServerApp.Model.HumanBeing.HumanBeing;
+import com.ClientServerApp.Response.Response;
 
 import java.util.Hashtable;
 
 public class Show implements Command {
     @Override
-    public String execute(Hashtable<Integer, HumanBeing> collection) {
+    public Response execute(Hashtable<Integer, HumanBeing> collection) {
         if (collection.isEmpty())
-            return "Collection is empty!";
+            return new Response("Collection is empty!", null);
 
         StringBuilder info = new StringBuilder("\nUsers:\n");
 
@@ -21,6 +22,6 @@ public class Show implements Command {
             info.append(user).append("\n");
         });
 
-        return String.valueOf(info);
+        return new Response(String.valueOf(info), collection);
     }
 }

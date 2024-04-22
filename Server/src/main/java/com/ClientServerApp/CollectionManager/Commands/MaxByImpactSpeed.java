@@ -1,14 +1,15 @@
 package com.ClientServerApp.CollectionManager.Commands;
 
 import com.ClientServerApp.Model.HumanBeing.HumanBeing;
+import com.ClientServerApp.Response.Response;
 
 import java.util.Hashtable;
 
 public class MaxByImpactSpeed implements Command{
     @Override
-    public String execute(Hashtable<Integer, HumanBeing> collection) {
+    public Response execute(Hashtable<Integer, HumanBeing> collection) {
         if (collection.isEmpty())
-            return "Collection is empty!";
+            return new Response("Collection is empty!", null);
 
         HumanBeing human = collection.values().stream().
                 max((firstHuman, secondHuman) -> firstHuman.getImpactSpeed().compareTo(secondHuman.getImpactSpeed())).
@@ -18,6 +19,6 @@ public class MaxByImpactSpeed implements Command{
         for (String field: human.toString().split("\n")) {
             stringBuilder.append("\t\t").append(field).append("\n");
         }
-        return String.valueOf(stringBuilder);
+        return new Response(String.valueOf(stringBuilder), human);
     }
 }

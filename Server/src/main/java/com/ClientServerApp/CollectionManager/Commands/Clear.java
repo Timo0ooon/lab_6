@@ -1,16 +1,17 @@
 package com.ClientServerApp.CollectionManager.Commands;
 
 import com.ClientServerApp.Model.HumanBeing.HumanBeing;
+import com.ClientServerApp.Response.Response;
 
 import java.util.Hashtable;
 
 public class Clear implements Command {
     @Override
-    public String execute(Hashtable<Integer, HumanBeing> collection) {
+    public Response execute(Hashtable<Integer, HumanBeing> collection) {
         if (collection.isEmpty())
-            return "Collection is empty!";
+            return new Response("Collection is empty!", false);
 
         collection.clear();
-        return "Collection cleared!";
+        return new Response("Collection cleared!", true);
     }
 }

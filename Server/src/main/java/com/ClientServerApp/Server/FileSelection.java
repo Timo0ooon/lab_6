@@ -1,5 +1,7 @@
 package com.ClientServerApp.Server;
 
+import com.ClientServerApp.Response.Response;
+
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
@@ -8,7 +10,7 @@ import java.util.Objects;
 import static java.io.File.separator;
 
 public class FileSelection {
-    public static HashMap<Integer, String> execute() {
+    public static Response execute() {
         final File file = new File("Server" + separator + "src" + separator + "main" + separator +
                 "java" + separator + "com" + separator + "ClientServerApp" + separator + "Data" + separator);
 
@@ -19,7 +21,7 @@ public class FileSelection {
             choice.put(i, fileList.get(i).getName());
         }
 
-        return choice;
+        return new Response(choice);
     }
 
     public static void main(String[] args) {

@@ -1,6 +1,7 @@
 package com.ClientServerApp.CollectionManager.Commands;
 
 import com.ClientServerApp.Model.HumanBeing.HumanBeing;
+import com.ClientServerApp.Response.Response;
 
 import java.time.LocalDate;
 import java.util.Hashtable;
@@ -9,9 +10,9 @@ import java.util.List;
 public class Info implements Command {
 
     @Override
-    public String execute(Hashtable<Integer, HumanBeing> collection) {
+    public Response execute(Hashtable<Integer, HumanBeing> collection) {
         if (collection.isEmpty())
-            return "Collection is empty!";
+            return new Response("Collection is empty!", false);
 
         List<LocalDate> dates = collection.values().stream().map(HumanBeing::getCreationDate).toList();
         LocalDate lastDay = dates.stream().max((el, el1) -> {
@@ -22,6 +23,8 @@ public class Info implements Command {
             return 1;
         }).get();
 
-        return "\nInfo:\n\t\tType of collection: " + collection.getClass() + "\n" + "\t\tSize of collection: " + collection.size() + "\n" + "\t\tLast day of editing: " + lastDay;
+        return new Response("\nInfo:\n\t\tType of collection: "
+                + collection.getClass() + "\n" + "\t\tSize of collection: "
+                + collection.size() + "\n" + "\t\tLast day of editing: " + lastDay, true);
     }
 }

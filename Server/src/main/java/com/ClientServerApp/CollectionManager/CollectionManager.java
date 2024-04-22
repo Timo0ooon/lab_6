@@ -4,6 +4,7 @@ import com.ClientServerApp.CollectionManager.Commands.*;
 import com.ClientServerApp.DataProvider.Reader.CSVReader;
 import com.ClientServerApp.Model.HumanBeing.HumanBeing;
 import com.ClientServerApp.Request.Request;
+import com.ClientServerApp.Response.Response;
 import com.ClientServerApp.Server.Server;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,7 +51,7 @@ public class CollectionManager {
         this.commandsWithTwoArguments.put("insert", new Insert());
     }
 
-    public String findCommand(Request request) {
+    public Response findCommand(Request request) {
 
         HumanBeing human = request.getHuman();
         String userLine = request.getCommand();
@@ -58,7 +59,7 @@ public class CollectionManager {
         this.logger.info("[Server]: finds command: " + userLine);
 
         if (userLine.isEmpty() || userLine.replaceAll(" ", "").isEmpty())
-            return "Unknown command!";
+            return new Response("Unknown command!", false);
 
         String[] userLines = userLine.split(" ");
         String command = userLines[0];
@@ -76,7 +77,7 @@ public class CollectionManager {
         else if (commandsWithTwoArguments.containsKey(command))
             return this.commandsWithTwoArguments.get(command).execute(this.collection, argument, human);
 
-        return "Unknown command!";
+        return new Response("Unknown command!", false);
     }
 
     public ArrayList<Integer> getIdList() { return idList; }

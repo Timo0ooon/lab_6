@@ -2,6 +2,7 @@ package com.ClientServerApp.CollectionManager.Commands;
 
 import com.ClientServerApp.DataProvider.Writer.CSVWriter;
 import com.ClientServerApp.Model.HumanBeing.HumanBeing;
+import com.ClientServerApp.Response.Response;
 
 import java.util.Hashtable;
 
@@ -14,12 +15,15 @@ public class Save implements Command {
     }
 
     @Override
-    public String execute(Hashtable<Integer, HumanBeing> collection) {
+    public Response execute(Hashtable<Integer, HumanBeing> collection) {
         CSVWriter CSVWriter = new CSVWriter();
 
 
-        CSVWriter.write(collection, "Server" + separator + "src" + separator + "main" + separator +
-                "java" + separator + "com" + separator + "ClientServerApp" + separator + "Data" + separator + this.fileName);
-        return "Saved!";
+        if (CSVWriter.write(collection, "Server" + separator + "src" + separator + "main" + separator +
+                "java" + separator + "com" + separator + "ClientServerApp" + separator + "Data" + separator + this.fileName))
+            return new Response("Saved!", true);
+
+        return new Response("Error!", false);
+
     }
 }

@@ -2,6 +2,7 @@ package com.ClientServerApp.Client;
 
 import com.ClientServerApp.CommandManager.CommandManager;
 import com.ClientServerApp.Model.DataBase.Identifiers;
+import com.ClientServerApp.Response.Response;
 import com.ClientServerApp.Write;
 
 import java.io.IOException;
@@ -30,9 +31,11 @@ public class Client {
                 ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream())
         ) {
             Object object;
+            Response response;
 
             //*****\\                                     [User File choice]                                     //*****\\
-            object = objectInputStream.readObject();
+            response = (Response) objectInputStream.readObject();
+            object = response.getObject();
             HashMap<Integer, String> choice = new HashMap<>();
             if (object instanceof HashMap<?, ?>
                     && ((HashMap<?, ?>) object).keySet().stream().allMatch(el -> el instanceof Integer)
@@ -44,7 +47,8 @@ public class Client {
 
 
             //*****\\                                     [Setting identifiers]                                   //*****\\
-            object = objectInputStream.readObject();
+            response = (Response) objectInputStream.readObject();
+            object = response.getObject();
             ArrayList<Integer> idList = new ArrayList<>();
             if (object instanceof ArrayList<?> && ((ArrayList<?>) object).stream().allMatch(el -> el instanceof Integer)) {
                 idList = (ArrayList<Integer>) object;
@@ -63,9 +67,9 @@ public class Client {
                 if (userLine.replaceAll(" ", "").isEmpty())
                     continue;
 
-                String response = commandManager.find(userLine, objectInputStream, objectOutputStream);
+                response = commandManager.find(userLine, objectInputStream, objectOutputStream);
                 if (response != null)
-                    Write.writeMessage(response + "\n");
+                    Write.writeMessage(response.getMessage() + "\n");
                 else {
                     Write.writeError("Unknown command!");
                 }

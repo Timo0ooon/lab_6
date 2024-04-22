@@ -2,6 +2,7 @@ package com.ClientServerApp.Server;
 
 import com.ClientServerApp.CollectionManager.CollectionManager;
 import com.ClientServerApp.Request.Request;
+import com.ClientServerApp.Response.Response;
 import org.apache.log4j.PropertyConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +12,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.HashMap;
 
 import static java.io.File.separator;
 
@@ -43,7 +43,7 @@ public class Server {
                         ObjectInputStream objectInputStream = new ObjectInputStream(userSocket.getInputStream());
                         ObjectOutputStream objectOutputStream = new ObjectOutputStream(userSocket.getOutputStream());
                 ) {
-                    HashMap<Integer, String> choice = FileSelection.execute();
+                    Response choice = FileSelection.execute();
                     objectOutputStream.writeObject(choice);
                     objectOutputStream.flush();
 
@@ -53,14 +53,14 @@ public class Server {
                     CollectionManager collectionManager = new CollectionManager(fileName);
 
 
-                    objectOutputStream.writeObject(collectionManager.getIdList());
+                    objectOutputStream.writeObject( new Response(collectionManager.getIdList()) );
                     objectOutputStream.flush();
 
                     while (true) {
                         this.logger.info("[Server]: waiting request...");
                         Request request = (Request) objectInputStream.readObject();
 
-                        String response = collectionManager.findCommand(request);
+                        Response response = collectionManager.findCommand(request);
 
                         objectOutputStream.writeObject(response);
                         objectOutputStream.flush();

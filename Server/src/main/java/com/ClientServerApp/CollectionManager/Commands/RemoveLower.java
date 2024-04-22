@@ -2,6 +2,7 @@ package com.ClientServerApp.CollectionManager.Commands;
 
 import com.ClientServerApp.Model.DataBase.Identifiers;
 import com.ClientServerApp.Model.HumanBeing.HumanBeing;
+import com.ClientServerApp.Response.Response;
 import com.ClientServerApp.Server.Server;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,14 +15,14 @@ public class RemoveLower implements CommandWithArgument {
     private final Logger logger = LoggerFactory.getLogger(Server.class);
 
     @Override
-    public String execute(Hashtable<Integer, HumanBeing> collection, String argument) {
+    public Response execute(Hashtable<Integer, HumanBeing> collection, String argument) {
         if (collection.isEmpty())
-            return "Collection is empty!";
+            return new Response("Collection is empty!", false);
 
         try {
             Integer key = Integer.parseInt(argument);
             if (!collection.containsKey(key))
-                return "Key is not in collection!";
+                return new Response("Key is not in collection!", false);
 
             ArrayList<Integer> idList = new ArrayList<>();
             ArrayList<Integer> keys = new ArrayList<>();
@@ -42,13 +43,13 @@ public class RemoveLower implements CommandWithArgument {
                 Identifiers.delete(id);
             }
 
-            return "Deleted!";
+            return new Response("Deleted!", true);
 
         }
         catch (NumberFormatException e) {
             this.logger.error("[Server]: " + e.getMessage());
         }
 
-        return "Error!";
+        return new Response("Error!", false);
     }
 }

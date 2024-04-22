@@ -9,6 +9,7 @@ import com.ClientServerApp.CommandManager.Commands.Help.Help;
 import com.ClientServerApp.Model.HumanBeing.HumanBeing;
 import com.ClientServerApp.MyConsts;
 import com.ClientServerApp.Request.Request;
+import com.ClientServerApp.Response.Response;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -25,13 +26,13 @@ public class CommandManager {
         commands.put("exit", new Exit());
     }
 
-    public String find(String userLine, ObjectInputStream objectInputStream, ObjectOutputStream objectOutputStream) throws IOException, ClassNotFoundException {
-        String response = null;
+    public Response find(String userLine, ObjectInputStream objectInputStream, ObjectOutputStream objectOutputStream) throws IOException, ClassNotFoundException {
+        Response response = null;
         userLine = userLine.toLowerCase();
 
         if (MyConsts.commandsOnClient.contains(userLine.toLowerCase())) {
             commands.get(userLine.toLowerCase()).execute();
-            response = "Done!";
+            response = new Response("Done!", true);
         }
         else if (MyConsts.hybridCommands.contains(userLine)) {
             for (Request request: LoadScript.makeRequests()) {
@@ -39,7 +40,7 @@ public class CommandManager {
                 objectOutputStream.writeObject(request);
                 objectOutputStream.flush();
 
-                response = (String) objectInputStream.readObject();
+                response = (Response) objectInputStream.readObject();
 
             }
         }
@@ -54,7 +55,7 @@ public class CommandManager {
             objectOutputStream.writeObject(request);
             objectOutputStream.flush();
 
-            response = (String) objectInputStream.readObject();
+            response = (Response) objectInputStream.readObject();
         }
         return response;
     }
